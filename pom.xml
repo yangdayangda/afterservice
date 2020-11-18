@@ -47,7 +47,7 @@
             <version>3.1.0</version>
         </dependency>
 
-<!--        导入德鲁伊的依赖-->
+<!--        导入德鲁伊的依赖，数据池-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
