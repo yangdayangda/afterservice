@@ -2,25 +2,37 @@ package com.example.afterservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 
 @EnableSwagger2
 
-public class swagger {
+public class Swagger {
 
     @Bean
 
     public Docket docket() {
+
+//        ParameterBuilder tokenPar = new ParameterBuilder();
+//        List<Parameter> pars = new ArrayList<Parameter>();
+//        tokenPar.name("token").description("用户令牌").
+//                modelRef(new ModelRef("string")).
+//                parameterType("header").
+//                required(false).build();
+//        pars.add(tokenPar.build());
 
         return new Docket(DocumentationType.SWAGGER_2)
 
@@ -38,7 +50,10 @@ public class swagger {
 
                 .paths(PathSelectors.any())
 
-                .build();
+                .build()
+//                .globalOperationParameters(pars)
+                .securityContexts(Arrays.asList(securityContexts()))
+                .securitySchemes(Arrays.asList(securitySchemes()));
 
     }
 
@@ -59,6 +74,22 @@ public class swagger {
         );
     }
 
+    private SecurityScheme securitySchemes() {
+        return new ApiKey("Authorization", "token", "header");
+    }
 
+    private SecurityContext securityContexts() {
+        return SecurityContext.builder()
+                .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.any())
+                .build();
+    }
+
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("xxx", "描述信息");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Arrays.asList(new SecurityReference("Authorization", authorizationScopes));
+    }
 
 }

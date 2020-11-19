@@ -1,10 +1,12 @@
 package com.example.afterservice.controller;
 
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.afterservice.common.domain.RestResponse;
 import com.example.afterservice.convert.UserConvert;
 import com.example.afterservice.entity.User;
 import com.example.afterservice.service.UserService;
+import com.example.afterservice.utils.JWTUtil;
 import com.example.afterservice.vo.UserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -32,11 +36,17 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @ApiOperation("查询该用户在数据库是否存在，当传入参数为空是返回所有值")
+    @ApiOperation("查询单一用户，返回该用户的token")
     @PostMapping("/query")
     public RestResponse queryUser(User user){
         RestResponse restResponse = new RestResponse();
-        restResponse.setResult(userService.queryUser(user));
+        List<User> users = userService.queryUser(user);
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("id",users.get(0).getId());
+        String token = JWTUtil.getToken(map);
+        restResponse.setResult(token);
+
         return restResponse;
     }
 
@@ -59,7 +69,7 @@ public class UserController {
         return restResponse;
     }
 
-    @ApiOperation("验证码登陆，先要发送验证码")
+    @ApiOperation("验证码登陆，先要发送验证码，返回该登陆用户的token")
     @GetMapping("/loginByCode")
     private RestResponse loginByCode(String email,String key,String code){
         RestResponse restResponse = new RestResponse();
@@ -67,13 +77,23 @@ public class UserController {
         User user = new User();
         user.setEmail(email);
         List<User> users = userService.queryUser(user);
-        restResponse.setResult(users);
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("id",users.get(0).getId());
+        String token = JWTUtil.getToken(map);
+        restResponse.setResult(token);
+
         return restResponse;
     }
 
-    @ApiOperation("通过ID值来更改用户，所以传入的参数当中必须含有ID")
+    @ApiOperation("header请求头当中存token，其他传要改变的值")
     @PostMapping("/update")
-    public RestResponse updateUser(User user){
+    public RestResponse updateUser(HttpServletRequest request,User user){
+        String token = request.getHeader("token");
+        DecodedJWT verify = JWTUtil.verify(token);
+        String id = verify.getClaim("id").asString();
+        user.setId(id);
+
         userService.updateUser(user);
         return new RestResponse();
     }
