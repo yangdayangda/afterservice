@@ -8,15 +8,16 @@ import com.example.afterservice.entity.User;
 import com.example.afterservice.service.UserService;
 import com.example.afterservice.utils.JWTUtil;
 import com.example.afterservice.vo.UserVo;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -36,17 +37,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @ApiOperation("查询单一用户，返回该用户的token")
-    @PostMapping("/query")
-    public RestResponse queryUser(User user){
+
+    @ApiOperation("通过手机号密码登陆，登录成功返回token")
+    @PostMapping("/loginByPassword")
+    public RestResponse loginByPassword(String phone,String password){
         RestResponse restResponse = new RestResponse();
-        List<User> users = userService.queryUser(user);
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("id",users.get(0).getId());
-        String token = JWTUtil.getToken(map);
+        String token = userService.loginByPassword(phone,password);
         restResponse.setResult(token);
-
         return restResponse;
     }
 
@@ -70,8 +67,8 @@ public class UserController {
     }
 
     @ApiOperation("验证码登陆，先要发送验证码，返回该登陆用户的token")
-    @GetMapping("/loginByCode")
-    private RestResponse loginByCode(String email,String key,String code){
+    @PostMapping("/loginByCode")
+    public RestResponse loginByCode(String email,String key,String code){
         RestResponse restResponse = new RestResponse();
         userService.checkCode(key,code);
         User user = new User();
@@ -82,14 +79,13 @@ public class UserController {
         map.put("id",users.get(0).getId());
         String token = JWTUtil.getToken(map);
         restResponse.setResult(token);
-
         return restResponse;
     }
 
-    @ApiOperation("header请求头当中存token，其他传要改变的值")
+    @ApiOperation("更改用户信息")
     @PostMapping("/update")
     public RestResponse updateUser(HttpServletRequest request,User user){
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
         DecodedJWT verify = JWTUtil.verify(token);
         String id = verify.getClaim("id").asString();
         user.setId(id);
@@ -98,5 +94,16 @@ public class UserController {
         return new RestResponse();
     }
 
+    @RequiresPermissions("user:getUserRole")
+    @GetMapping("/getUserRole")
+    public RestResponse getUserRole(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        DecodedJWT verify = JWTUtil.verify(token);
+        String id = verify.getClaim("id").asString();
+
+        Set<String> roles = userService.getRoleById(id);
+
+        return new RestResponse(roles);
+    }
 
 }

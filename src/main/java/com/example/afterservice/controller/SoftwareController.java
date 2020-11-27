@@ -4,6 +4,7 @@ package com.example.afterservice.controller;
 import com.example.afterservice.common.domain.RestResponse;
 import com.example.afterservice.entity.Software;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.stereotype.Controller;
 import com.example.afterservice.service.SoftwareService;
 import io.swagger.annotations.Api;
@@ -29,6 +30,7 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/software")
 @Api(value = "", tags = "", description="")
+@RequiresRoles("admin")
 public class SoftwareController {
 
     @Autowired

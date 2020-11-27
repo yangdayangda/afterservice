@@ -4,6 +4,7 @@ import com.example.afterservice.common.domain.BusinessException;
 import com.example.afterservice.common.domain.CommonErrorCode;
 import com.example.afterservice.common.domain.ErrorCode;
 import com.example.afterservice.common.domain.RestResponse;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,8 @@ public class GlobelExceptionHandler {
             int code = errorCode.getCode();
             String desc = errorCode.getDesc();
             return new RestResponse(String.valueOf(code),desc);
+        }else if (e instanceof UnauthorizedException){
+            return new RestResponse("103102","未授权");
         }
         return new RestResponse(String.valueOf(CommonErrorCode.UNKNOWN.getCode()),CommonErrorCode.UNKNOWN.getDesc());
     }

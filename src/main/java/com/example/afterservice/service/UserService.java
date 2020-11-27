@@ -4,6 +4,7 @@ import com.example.afterservice.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -24,5 +25,11 @@ public interface UserService {
     void addUser(User user);
 
     void updateUser(User user);
+
+    Set<String> getRoleById(String id);
+
+    String loginByPassword(String phone, String password);
+
+    Set<String> getPreByRole(Set<String> roles);
 
 }

@@ -1,7 +1,6 @@
 package com.example.afterservice.config;
 
 
-import com.example.afterservice.common.intercept.JWTIntercept;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -30,11 +29,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new JWTIntercept())
-                .excludePathPatterns("/user/**")
-                .excludePathPatterns("/swagger-resources/**", "/webjars/**", "/v2/**", "/swagger-ui.html/**")
-                .addPathPatterns("/**");
-    }
 }

@@ -9,19 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootTest
 public class UserTest {
-    @Autowired
-    private UserMapper userMapper;
 
     @Autowired
     private UserService userService;
 
-    @Test
-    void testselect(){
-        System.out.println(userMapper.selectList(null));
-    }
 
 //    @Test
 //    void testInsert(){
@@ -32,5 +28,17 @@ public class UserTest {
 //        User user1 = UserConvert.INSTANCE.vo2entity(user);
 //        System.out.println(user1.getPhone());
 //        System.out.println(userMapper.insert(user1));
+//    }
+
+//    @Test
+//    void testCode(){
+//        userService.checkCode("sms:d36c5c213113482ebefd68c5d808f4e9","709874");
+//    }
+//
+//    @Test
+//    void testSelect(){
+//        User user = new User();
+//        user.setEmail("2842635969@qq.com");
+//        System.out.println(userService.queryUser(user));
 //    }
 }
