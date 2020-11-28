@@ -3,6 +3,7 @@ package com.example.afterservice.controller;
 
 import com.example.afterservice.common.domain.RestResponse;
 import com.example.afterservice.entity.Question;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
 import com.example.afterservice.service.QuestionService;
 import io.swagger.annotations.Api;
@@ -33,12 +34,14 @@ public class QuestionController {
     @Autowired
     private QuestionService questionService;
 
+    @ApiOperation("得到全部问题的类型")
     @GetMapping("all")
     public RestResponse getAll(){
         List<Question>  questions =  questionService.getAllType();
         return new RestResponse(questions);
     }
 
+    @ApiOperation("增加问题类型")
     @GetMapping("add")
     public RestResponse addType(String name){
         questionService.addType(name);

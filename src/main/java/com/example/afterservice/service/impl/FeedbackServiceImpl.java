@@ -7,6 +7,7 @@ import com.example.afterservice.common.domain.BusinessException;
 import com.example.afterservice.common.domain.CommonErrorCode;
 import com.example.afterservice.entity.Feedback;
 import com.example.afterservice.mapper.FeedbackMapper;
+import com.example.afterservice.service.FeedbackService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional
-public class FeedbackServiceImpl  implements FeedbackService{
+public class FeedbackServiceImpl  implements FeedbackService {
 
     @Autowired
     private FeedbackMapper feedbackMapper;
@@ -54,5 +55,12 @@ public class FeedbackServiceImpl  implements FeedbackService{
         IPage<Feedback> feedbackIPage = feedbackMapper.selectPage(page, wrapper);
 
         return feedbackIPage.getRecords();
+    }
+
+    @Override
+    public int getCounts(String id) {
+        QueryWrapper<Feedback> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id",id);
+        return feedbackMapper.selectCount(wrapper);
     }
 }

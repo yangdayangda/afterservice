@@ -1,7 +1,6 @@
 package com.example.afterservice.service;
 
 import com.example.afterservice.entity.Feedback;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
 
@@ -20,4 +19,7 @@ public interface FeedbackService  {
     void deleteFeedback(String id);
 
     List<Feedback> getMyFeedback(String id,int pageIndex, int size);
+
+    int getCounts(String id);
+
 }
