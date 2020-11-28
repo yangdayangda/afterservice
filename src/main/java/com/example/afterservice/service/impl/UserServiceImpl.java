@@ -20,11 +20,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -112,10 +109,6 @@ public class UserServiceImpl implements UserService {
         userMapper.updateById(user);
     }
 
-    @Override
-    public Set<String> getRoleById(String id) {
-        return userMapper.getRoleByUser(id);
-    }
 
     @Override
     public String loginByPassword(String phone, String password) {
@@ -132,14 +125,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<String> getPreByRole(Set<String> roles) {
-        Set<String> allPremission = new HashSet<>();
-        for (String role :
-                roles) {
-            Set<String> premission = userMapper.getPreByRole(role);
-            allPremission.addAll(premission);
-        }
-        return allPremission;
+    public User getUserById(String id) {
+        return userMapper.selectById(id);
     }
 
 }

@@ -3,6 +3,8 @@ package com.example.afterservice.shiro.realm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.afterservice.common.domain.BusinessException;
 import com.example.afterservice.common.domain.CommonErrorCode;
+import com.example.afterservice.service.RolePremissionService;
+import com.example.afterservice.service.UserRoleService;
 import com.example.afterservice.service.UserService;
 import com.example.afterservice.shiro.token.JwtToken;
 import com.example.afterservice.utils.JWTUtil;
@@ -23,7 +25,10 @@ import java.util.Set;
 public class Jwtrealm extends AuthorizingRealm {
 
     @Autowired
-    private UserService userService;
+    private UserRoleService userRoleService;
+
+    @Autowired
+    private RolePremissionService rolePremissionService;
 
     @Override
     public boolean supports(AuthenticationToken token) {
@@ -41,11 +46,10 @@ public class Jwtrealm extends AuthorizingRealm {
             throw new BusinessException(CommonErrorCode.E_100102);
         }
         String id = verify.getClaim("id").asString();
-        Set<String> roles = userService.getRoleById(id);
+        Set<String> roles = userRoleService.getRoleById(id);
         simpleAuthorizationInfo.addRoles(roles);
 
-        Set<String> premissions=userService.getPreByRole(roles);
-
+        Set<String> premissions=rolePremissionService.getPreByRole(roles);
         simpleAuthorizationInfo.addStringPermissions(premissions);
         return simpleAuthorizationInfo;
     }

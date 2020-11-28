@@ -30,7 +30,6 @@ import java.util.List;
 @CrossOrigin
 @RequestMapping("/software")
 @Api(value = "", tags = "", description="")
-@RequiresRoles("admin")
 public class SoftwareController {
 
     @Autowired

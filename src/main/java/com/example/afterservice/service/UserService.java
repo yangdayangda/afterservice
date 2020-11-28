@@ -26,10 +26,9 @@ public interface UserService {
 
     void updateUser(User user);
 
-    Set<String> getRoleById(String id);
 
     String loginByPassword(String phone, String password);
 
-    Set<String> getPreByRole(Set<String> roles);
+    User getUserById(String id);
 
 }

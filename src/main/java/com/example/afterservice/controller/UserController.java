@@ -82,28 +82,26 @@ public class UserController {
         return restResponse;
     }
 
-    @ApiOperation("更改用户信息")
+    @ApiOperation("更改用户信息，此接口也可以用来作为申请角色的接口")
     @PostMapping("/update")
     public RestResponse updateUser(HttpServletRequest request,User user){
         String token = request.getHeader("Authorization");
         DecodedJWT verify = JWTUtil.verify(token);
         String id = verify.getClaim("id").asString();
         user.setId(id);
-
         userService.updateUser(user);
         return new RestResponse();
     }
 
-    @RequiresPermissions("user:getUserRole")
-    @GetMapping("/getUserRole")
-    public RestResponse getUserRole(HttpServletRequest request){
+    @ApiOperation("得到当前用户的所有信息")
+    @GetMapping("getInfo")
+    public RestResponse getInfo(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         DecodedJWT verify = JWTUtil.verify(token);
         String id = verify.getClaim("id").asString();
-
-        Set<String> roles = userService.getRoleById(id);
-
-        return new RestResponse(roles);
+        User user = userService.getUserById(id);
+        return new RestResponse(user);
     }
+
 
 }
