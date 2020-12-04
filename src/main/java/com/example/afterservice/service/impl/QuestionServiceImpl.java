@@ -1,5 +1,6 @@
 package com.example.afterservice.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.afterservice.common.domain.BusinessException;
 import com.example.afterservice.common.domain.CommonErrorCode;
 import com.example.afterservice.entity.Question;
@@ -42,5 +43,16 @@ public class QuestionServiceImpl  implements QuestionService {
         if (insert==0){
             throw new BusinessException(CommonErrorCode.E_100118);
         }
+    }
+
+    @Override
+    public void deleteByName(String name) {
+        QueryWrapper<Question> wrapper = new QueryWrapper<>();
+        wrapper.eq("type",name);
+        int i = questionMapper.delete(wrapper);
+        if (i==0){
+            throw new BusinessException(CommonErrorCode.E_100119);
+        }
+
     }
 }

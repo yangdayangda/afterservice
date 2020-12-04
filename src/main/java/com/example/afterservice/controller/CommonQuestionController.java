@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("commonQuestion")
-@Api(value = "", tags = "", description="")
+@Api(tags = "常见问题处理接口")
 public class CommonQuestionController {
 
     @Autowired
@@ -33,7 +33,7 @@ public class CommonQuestionController {
 
     @ApiOperation("得到全部的常见问题，传入第几页，每页大小")
     @GetMapping("getAll")
-    public RestResponse getAll(int pageIndex,int size){
+    public RestResponse getAll(Integer pageIndex,Integer size){
         List<CommonQuestion> commonQuestions = commonQuestionService.getAll(pageIndex,size);
         return new RestResponse(commonQuestions);
     }

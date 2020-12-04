@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("question")
-@Api(value = "", tags = "", description="")
+@Api(tags = "问题类型相关接口")
 public class QuestionController {
 
     @Autowired
@@ -45,6 +45,13 @@ public class QuestionController {
     @GetMapping("add")
     public RestResponse addType(String name){
         questionService.addType(name);
+        return new RestResponse();
+    }
+
+    @ApiOperation("传入问题类型进行删除")
+    @GetMapping("delete")
+    public RestResponse deleteQuestion(String name){
+        questionService.deleteByName(name);
         return new RestResponse();
     }
 }

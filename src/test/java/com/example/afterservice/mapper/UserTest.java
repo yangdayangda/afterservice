@@ -3,6 +3,7 @@ package com.example.afterservice.mapper;
 import com.example.afterservice.convert.UserConvert;
 import com.example.afterservice.entity.User;
 import com.example.afterservice.service.UserService;
+import com.example.afterservice.utils.RedisUtil;
 import com.example.afterservice.vo.UserVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class UserTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
 
 //    @Test
@@ -41,4 +45,13 @@ public class UserTest {
 //        user.setEmail("2842635969@qq.com");
 //        System.out.println(userService.queryUser(user));
 //    }
+
+    @Test
+    void testRedis(){
+        User user = new User();
+        user.setUsername("zhangshan");
+        user.setPassword("12345");
+        redisUtil.set("zhanshan",user);
+        System.out.println(redisUtil.get("zhanshan"));
+    }
 }

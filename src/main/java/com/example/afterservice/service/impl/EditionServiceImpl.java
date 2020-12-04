@@ -42,7 +42,7 @@ public class EditionServiceImpl  implements EditionService {
     @Override
     public List<Edition> getAllByname(String softname) {
         QueryWrapper<Edition> wrapper = new QueryWrapper<>();
-        wrapper.eq("softname_id",softname);
+        wrapper.eq("software_id",softname);
         wrapper.orderByDesc("time");
         List<Edition> editions = editionMapper.selectList(wrapper);
         return editions;

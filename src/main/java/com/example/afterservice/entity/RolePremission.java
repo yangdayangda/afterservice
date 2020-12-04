@@ -3,7 +3,7 @@ package com.example.afterservice.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,10 +11,15 @@ import lombok.NoArgsConstructor;
 @TableName("role_pre")
 @NoArgsConstructor
 public class RolePremission {
+    @ApiModelProperty("角色资源连接表id")
     @TableId(value = "id",type = IdType.UUID)
-    String id;
-    String roleId;
-    String premissionId;
+    private String id;
+
+    @ApiModelProperty("角色的名称")
+    private String roleId;
+
+    @ApiModelProperty("权限的ID")
+    private String premissionId;
 
     public RolePremission(String roleId, String premissionId) {
         this.roleId = roleId;

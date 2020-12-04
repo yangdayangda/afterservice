@@ -3,6 +3,8 @@ package com.example.afterservice.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -15,6 +17,7 @@ public class Question implements Serializable {
     /**
      * 问题类型
      */
+    @ApiModelProperty("问题类型")
     @TableId(value = "type", type = IdType.ID_WORKER)
     private String type;
 

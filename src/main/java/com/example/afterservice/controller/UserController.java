@@ -5,9 +5,11 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.afterservice.common.domain.RestResponse;
 import com.example.afterservice.convert.UserConvert;
 import com.example.afterservice.entity.User;
+import com.example.afterservice.entity.UserDto;
 import com.example.afterservice.service.UserService;
 import com.example.afterservice.utils.JWTUtil;
 import com.example.afterservice.vo.UserVo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,6 +30,7 @@ import java.util.Set;
  * @author author
  * @since 2020-11-15
  */
+@Api(tags = "用户处理相关接口")
 @Slf4j
 @RestController
 @CrossOrigin
@@ -38,12 +41,13 @@ public class UserController {
     private UserService userService;
 
 
-    @ApiOperation("通过手机号密码登陆，登录成功返回token")
+    @ApiOperation("通过邮箱密码登陆，登录成功返回token")
     @PostMapping("/loginByPassword")
-    public RestResponse loginByPassword(String phone,String password){
+    public RestResponse loginByPassword(String email,String password){
         RestResponse restResponse = new RestResponse();
-        String token = userService.loginByPassword(phone,password);
+        String token = userService.loginByPassword(email,password);
         restResponse.setResult(token);
+        log.info("- 邮箱为{}的用户通过密码登陆成功",email);
         return restResponse;
     }
 
@@ -63,6 +67,7 @@ public class UserController {
         userService.checkCode(userVo.getKey(),userVo.getCode());
         User user = UserConvert.INSTANCE.vo2entity(userVo);
         userService.addUser(user);
+        log.info("- 邮箱为{}的用户注册成功",user.getEmail());
         return restResponse;
     }
 
@@ -79,6 +84,7 @@ public class UserController {
         map.put("id",users.get(0).getId());
         String token = JWTUtil.getToken(map);
         restResponse.setResult(token);
+        log.info("- 邮箱为{}的用户通过验证码登陆成功",email);
         return restResponse;
     }
 
@@ -103,5 +109,17 @@ public class UserController {
         return new RestResponse(user);
     }
 
+    @ApiOperation("得到全部用户的全部信息，需要当前角色拥有管理员权限")
+    @GetMapping("getAllUser")
+    public RestResponse getAllUser(){
+        List<UserDto> allUser = userService.getAllUser();
+        return new RestResponse(allUser);
+    }
 
+    @ApiOperation("增加用户，什么要增加自己决定")
+    @PostMapping("addUser")
+    public RestResponse addUser(User user){
+        userService.addUser(user);
+        return new RestResponse();
+    }
 }

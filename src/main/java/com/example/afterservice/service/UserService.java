@@ -1,6 +1,7 @@
 package com.example.afterservice.service;
 
 import com.example.afterservice.entity.User;
+import com.example.afterservice.entity.UserDto;
 
 import java.util.List;
 
@@ -28,5 +29,8 @@ public interface UserService {
     String loginByPassword(String phone, String password);
 
     User getUserById(String id);
+
+
+    List<UserDto> getAllUser();
 
 }

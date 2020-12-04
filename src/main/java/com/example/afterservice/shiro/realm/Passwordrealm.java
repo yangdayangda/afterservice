@@ -39,7 +39,7 @@ public class Passwordrealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         CustomizedToken token = (CustomizedToken) authenticationToken;
         User user1 = new User();
-        user1.setPhone(token.getUsername());
+        user1.setEmail(token.getUsername());
         List<User> users = userService.queryUser(user1);
         User user = users.get(0);
         return new SimpleAuthenticationInfo(token.getUsername(),user.getPassword(), ByteSource.Util.bytes(user.getId()),this.getName());

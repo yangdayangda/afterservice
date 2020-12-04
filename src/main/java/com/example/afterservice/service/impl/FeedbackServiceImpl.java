@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.afterservice.common.domain.BusinessException;
 import com.example.afterservice.common.domain.CommonErrorCode;
 import com.example.afterservice.entity.Feedback;
+import com.example.afterservice.entity.User;
 import com.example.afterservice.mapper.FeedbackMapper;
 import com.example.afterservice.service.FeedbackService;
 import lombok.extern.slf4j.Slf4j;
@@ -62,5 +63,33 @@ public class FeedbackServiceImpl  implements FeedbackService {
         QueryWrapper<Feedback> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id",id);
         return feedbackMapper.selectCount(wrapper);
+    }
+
+    @Override
+    public void updateFeedback(Feedback feedback) {
+        int i = feedbackMapper.updateById(feedback);
+        if (i==0){
+            throw new BusinessException(CommonErrorCode.E_100119);
+        }
+    }
+
+    @Override
+    public List<Feedback> getAllFeedback(Feedback feedback,int pageIndex,int size) {
+        QueryWrapper<Feedback> wrapper = new QueryWrapper<>(feedback);
+        wrapper.orderByDesc("time");
+        Page<Feedback> page = new Page<Feedback>(pageIndex, size);
+        IPage<Feedback> feedbackIPage = feedbackMapper.selectPage(page, wrapper);
+        return feedbackIPage.getRecords();
+    }
+
+    @Override
+    public int getAllCounts(Feedback feedback) {
+        return feedbackMapper.selectCount(new QueryWrapper<Feedback>(feedback));
+    }
+
+    @Override
+    public List<User> getUserById(String feedBackId) {
+
+        return feedbackMapper.getUserById(feedBackId);
     }
 }

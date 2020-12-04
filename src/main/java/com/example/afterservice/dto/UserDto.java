@@ -5,15 +5,13 @@ import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @Data
 @TableName("user")
-public class User implements Serializable {
+public class UserDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -64,7 +62,6 @@ public class User implements Serializable {
      * 注册时间
      */
     @ApiModelProperty("注册时间，数据库创建不用增加")
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime registerTime;
 
     @ApiModelProperty("申请的角色的ID")
@@ -81,4 +78,10 @@ public class User implements Serializable {
 
     @ApiModelProperty("身份证反面照")
     private String idCardBackImg;
+
+    @ApiModelProperty("用户的角色")
+    private String name;
+
+    @ApiModelProperty("用户的角色的备注")
+    private String remark;
 }

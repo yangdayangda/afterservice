@@ -5,6 +5,7 @@ import com.example.afterservice.common.domain.BusinessException;
 import com.example.afterservice.common.domain.CommonErrorCode;
 import com.example.afterservice.common.domain.ErrorCode;
 import com.example.afterservice.entity.User;
+import com.example.afterservice.entity.UserDto;
 import com.example.afterservice.entity.UserRole;
 import com.example.afterservice.mapper.UserMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -44,10 +45,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-
     @Autowired
     private RedisUtil redisUtil;
 
+    @Autowired
+    private MailUtil mailUtil;
     @Override
     public List<User> queryUser(User user) {
         List<User> userList = userMapper.selectList(new QueryWrapper<User>(user));
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserService {
         String key = UUID.randomUUID().toString();
         redisUtil.set(key,verifyCode,time);
         try{
-            MailUtil.sendEmail(email,verifyCode);
+            mailUtil.sendEmail(email,verifyCode);
         }catch (Exception e){
             throw new BusinessException(CommonErrorCode.E_100107);
         }
@@ -111,12 +113,12 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public String loginByPassword(String phone, String password) {
-        CustomizedToken customizedToken = new CustomizedToken(phone, password, "Password");
+    public String loginByPassword(String email, String password) {
+        CustomizedToken customizedToken = new CustomizedToken(email, password, "Password");
         Subject subject = SecurityUtils.getSubject();
         subject.login(customizedToken);
         User user = new User();
-        user.setPhone(phone);
+        user.setEmail(email);
         List<User> users = queryUser(user);
         String id = users.get(0).getId();
         HashMap<String, String> map = new HashMap<>();
@@ -127,6 +129,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(String id) {
         return userMapper.selectById(id);
+    }
+
+    @Override
+    public List<UserDto> getAllUser() {
+
+        return userMapper.getAllUser();
     }
 
 }

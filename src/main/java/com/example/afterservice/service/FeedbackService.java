@@ -1,6 +1,7 @@
 package com.example.afterservice.service;
 
 import com.example.afterservice.entity.Feedback;
+import com.example.afterservice.entity.User;
 
 import java.util.List;
 
@@ -22,4 +23,11 @@ public interface FeedbackService  {
 
     int getCounts(String id);
 
+    void updateFeedback(Feedback feedback);
+
+    List<Feedback> getAllFeedback(Feedback feedback,int pageIndex,int size);
+
+    int getAllCounts(Feedback feedback);
+
+    List<User> getUserById(String feedBackId);
 }

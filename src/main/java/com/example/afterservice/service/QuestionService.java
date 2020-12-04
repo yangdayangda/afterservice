@@ -18,4 +18,6 @@ public interface QuestionService  {
     List<Question> getAllType();
 
     void addType(String name);
+
+    void deleteByName(String name);
 }

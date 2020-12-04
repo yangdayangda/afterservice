@@ -8,15 +8,25 @@ import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.qiniu.util.Auth;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class QiniuUtils {
-    private static String accessKey = "YbCQ2SzwbFCnU_0Cm0M4Dy6-aV9Qb4qHPx9sLFXH";
-    private static String secretKey = "5v8yuspmfFlG6_QSNufWvdIqs40vACNkoYELvPj6";
-    private static String bucket = "yangdayangda";
-    private static String url="http://qjq75eo14.hn-bkt.clouddn.com/";
 
-    public static String upload(byte[] bytes,String name){
+    @Value("${qiniu.accessKey}")
+    private  String accessKey;
+
+    @Value("${qiniu.secretKey}")
+    private  String secretKey;
+
+    @Value("${qiniu.bucket}")
+    private  String bucket;
+
+    @Value("${qiniu.url}")
+    private  String url;
+
+    public  String upload(byte[] bytes,String name){
         //构造一个带指定 Region 对象的配置类
         Configuration cfg = new Configuration(Region.huanan());
 //...其他参数参考类注释

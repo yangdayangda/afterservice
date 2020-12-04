@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/software")
-@Api(value = "", tags = "", description="")
+@Api(value = "", tags = "软件名称相关接口", description="")
 public class SoftwareController {
 
     @Autowired

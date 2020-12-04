@@ -28,4 +28,6 @@ public class JWTUtil {
         DecodedJWT verify = JWT.require(Algorithm.HMAC384(sign)).build().verify(token);
         return verify;
     }
+
+
 }

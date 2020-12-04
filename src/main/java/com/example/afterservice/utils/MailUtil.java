@@ -1,14 +1,22 @@
 package com.example.afterservice.utils;
 
 import org.apache.commons.mail.HtmlEmail;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class MailUtil {
 
-    public static String FROM="QQ2842635969@163.com";
-    public static String AUTH="QCMDCQXQESUTUNCZ";
-    public static String hostname="smtp.163.com";
+    @Value("${email.FROM}")
+    public  String FROM;
+
+    @Value("${email.AUTH}")
+    public  String AUTH;
+
+    @Value("${email.hostname}")
+    public  String hostname;
     //邮箱验证码
-    public static boolean sendEmail(String emailaddress,String code){
+    public  boolean sendEmail(String emailaddress,String code){
         try {
             HtmlEmail email = new HtmlEmail();//不用更改
             email.setHostName(hostname);//需要修改，126邮箱为smtp.126.com,163邮箱为163.smtp.com，QQ为smtp.qq.com
@@ -20,7 +28,7 @@ public class MailUtil {
             email.setAuthentication(FROM, AUTH);//此处填写邮箱地址和客户端授权码
 
             email.setSubject("软件售后服务通讯");//此处填写邮件名，邮件名可任意填写
-            email.setMsg("尊敬的用户您好,您本次注册的验证码是:" + code);//此处填写邮件内容
+            email.setMsg("【软件售后服务】您的验证码是:" + code+",在10分钟内有效。如非本人操作请忽略本短信。");//此处填写邮件内容
 
             email.send();
             return true;

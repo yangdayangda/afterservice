@@ -1,7 +1,9 @@
 package com.example.afterservice.service;
 
-import com.example.afterservice.entity.Logs;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.afterservice.entity.Logging;
+
+import java.util.List;
 
 /**
  * <p>
@@ -11,6 +13,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author author
  * @since 2020-11-15
  */
-public interface LogsService  {
+public interface LoggingService  {
+
+    List<Logging> getAll(int pageIndex,int size);
+
+    int getAllCounts();
 
 }

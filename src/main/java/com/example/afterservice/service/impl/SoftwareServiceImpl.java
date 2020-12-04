@@ -3,9 +3,13 @@ package com.example.afterservice.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.example.afterservice.entity.Role;
 import com.example.afterservice.entity.Software;
+import com.example.afterservice.entity.UserRole;
+import com.example.afterservice.mapper.RoleMapper;
 import com.example.afterservice.mapper.SoftwareMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.afterservice.mapper.UserRoleMapper;
 import com.example.afterservice.service.SoftwareService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,10 @@ public class SoftwareServiceImpl  implements SoftwareService {
 
     @Autowired
     private SoftwareMapper softwareMapper;
+
+    @Autowired
+    private RoleMapper roleMapper;
+
     @Override
     public int getCount() {
         return softwareMapper.selectCount(null);
@@ -45,6 +53,10 @@ public class SoftwareServiceImpl  implements SoftwareService {
     @Override
     public void addSoftware(String name) {
         softwareMapper.insert(new Software(name));
+        Role role = new Role();
+        roleMapper.insert(role);
+        role.setName("programmer");
+        roleMapper.insert(role);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.example.afterservice.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.afterservice.entity.Premission;
+import com.example.afterservice.entity.RolePremission;
 import com.example.afterservice.mapper.RolePremissionMapper;
 import com.example.afterservice.service.RolePremissionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,4 +43,16 @@ public class RolePremissionServiceImpl implements RolePremissionService {
         }
 
     }
+
+    @Override
+    public Set<Premission> getAllPreByRoles(Set<String> roles) {
+        Set<Premission> set = new HashSet<>();
+        for (String role:
+             roles) {
+            Set<Premission> allPreByRole = rolePremissionMapper.getAllPreByRole(role);
+            set.addAll(allPreByRole);
+        }
+        return set;
+    }
+
 }

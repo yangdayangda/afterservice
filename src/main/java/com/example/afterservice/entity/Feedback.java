@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -20,14 +21,14 @@ public class Feedback implements Serializable {
     /**
      * 反馈ID
      */
-    @ApiModelProperty("反馈信息的ID")
+    @ApiModelProperty("反馈信息的ID，自动生成，不用传入")
     @TableId(value = "id", type = IdType.UUID)
     private String id;
 
     /**
      * 反馈者的ID
      */
-    @ApiModelProperty("反馈者的id")
+    @ApiModelProperty("反馈者的id,header当中有，不用传入")
     private String userId;
 
     /**
@@ -51,13 +52,13 @@ public class Feedback implements Serializable {
     /**
      * 详细描述
      */
-    @ApiModelProperty("详细描述")
+    @ApiModelProperty("详细描述，可为空")
     private String declareDescribe;
 
     /**
      * 上传文件的路径
      */
-    @ApiModelProperty("上传文件的路径")
+    @ApiModelProperty("上传文件的路径，可为空")
     private String uploadFile;
 
     /**
@@ -71,6 +72,7 @@ public class Feedback implements Serializable {
      * 反馈发出时间
      */
     @ApiModelProperty("反馈时间，数据库自动生成")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private LocalDateTime time;
 
     /**
@@ -85,5 +87,9 @@ public class Feedback implements Serializable {
     @ApiModelProperty("处理的方法")
     private String solution;
 
+    @ApiModelProperty("手机号码，联系时使用，可不传")
+    private String phone;
 
+    @ApiModelProperty("邮箱，联系时使用，可不传")
+    private String email;
 }
