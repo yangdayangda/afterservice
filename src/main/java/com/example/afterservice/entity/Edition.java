@@ -29,6 +29,16 @@ public class Edition implements Serializable {
     @ApiModelProperty("传入查询到的软件名称")
     private String softwareId;
 
+    @ApiModelProperty("发布者ID")
+    private String userId;
+
+    @ApiModelProperty("文章标题")
+    private String title;
+
+
+
+    @ApiModelProperty("文章摘要")
+    private String remark;
     /**
      * 版本号
      */
@@ -53,11 +63,15 @@ public class Edition implements Serializable {
     @ApiModelProperty("该版本下载次数")
     private Integer downloadNum;
 
+
+    @ApiModelProperty("解决方法")
+    private String solution;
+
     /**
      * 发布时间
      */
     @ApiModelProperty("版本发布时间，自动创建")
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime time;
 
 

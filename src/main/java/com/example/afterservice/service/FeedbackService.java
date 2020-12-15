@@ -1,5 +1,6 @@
 package com.example.afterservice.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.afterservice.entity.Feedback;
 import com.example.afterservice.entity.User;
 
@@ -19,15 +20,11 @@ public interface FeedbackService  {
 
     void deleteFeedback(String id);
 
-    List<Feedback> getMyFeedback(String id,int pageIndex, int size);
-
-    int getCounts(String id);
+    IPage<Feedback> getMyFeedback(String id, int pageIndex, int size);
 
     void updateFeedback(Feedback feedback);
 
-    List<Feedback> getAllFeedback(Feedback feedback,int pageIndex,int size);
-
-    int getAllCounts(Feedback feedback);
+    IPage<Feedback> getAllFeedback(Feedback feedback,int pageIndex,int size);
 
     List<User> getUserById(String feedBackId);
 }

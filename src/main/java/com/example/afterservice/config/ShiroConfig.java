@@ -32,12 +32,14 @@ public class ShiroConfig  {
     public ShiroFilterFactoryBean shiroFilter(){
         ShiroFilterFactoryBean bean = new ShiroFilterFactoryBean();
         bean.setSecurityManager(securityManager());
-        bean.setUnauthorizedUrl("http://baidu.com");
+
+//        自定义一个名叫jwt的过滤器，添加进去
         HashMap<String, Filter> filter = new HashMap<>();
         filter.put("jwt",new JwtFilter());
         bean.setFilters(filter);
 
         Map<String, String> filterMap = new LinkedHashMap<>();
+//        以下这些请求不会进入jwt
         filterMap.put("/swagger-resources/**","anon");
         filterMap.put("/webjars/**","anon");
         filterMap.put("/v2/**","anon");
@@ -47,6 +49,7 @@ public class ShiroConfig  {
         filterMap.put("/user/registerUser","anon");
         filterMap.put("/user/loginByCode","anon");
 
+//        对所有的请求进行jwt验证
         filterMap.put("/**","jwt");
         bean.setFilterChainDefinitionMap(filterMap);
         return bean;

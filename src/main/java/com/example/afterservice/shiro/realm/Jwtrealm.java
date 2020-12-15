@@ -8,12 +8,14 @@ import com.example.afterservice.service.UserRoleService;
 import com.example.afterservice.service.UserService;
 import com.example.afterservice.shiro.token.JwtToken;
 import com.example.afterservice.utils.JWTUtil;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,12 @@ public class Jwtrealm extends AuthorizingRealm {
         return token instanceof JwtToken;
     }
 
+
+    /**
+     *
+     * @param principalCollection
+     * @return
+     */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
@@ -65,6 +73,10 @@ public class Jwtrealm extends AuthorizingRealm {
             e.printStackTrace();
             throw new RuntimeException("验证错误");
         }
+
         return new SimpleAuthenticationInfo(token,token,this.getName());
+
     }
+
+
 }

@@ -5,6 +5,9 @@ import com.example.afterservice.entity.Premission;
 import com.example.afterservice.entity.RolePremission;
 import com.example.afterservice.mapper.RolePremissionMapper;
 import com.example.afterservice.service.RolePremissionService;
+import com.example.afterservice.shiro.realm.Jwtrealm;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+@Slf4j
 @Service
 public class RolePremissionServiceImpl implements RolePremissionService {
 
     @Autowired
     private RolePremissionMapper rolePremissionMapper;
+
 
 
     @Override
@@ -30,6 +36,11 @@ public class RolePremissionServiceImpl implements RolePremissionService {
         return allPremission;
     }
 
+    /**
+     * 修改相应角色的权限
+     * @param premissions
+     * @param role
+     */
     @Override
     public void updatePremission(List<String> premissions, String role) {
         QueryWrapper<RolePremission> rolePremissionQueryWrapper = new QueryWrapper<>();
@@ -41,9 +52,16 @@ public class RolePremissionServiceImpl implements RolePremissionService {
             RolePremission rolePremission = new RolePremission(role, premission);
             rolePremissionMapper.insert(rolePremission);
         }
-
+        log.warn("- 管理员修改了{}的权限",role);
+//        更改权限成功以后退出登陆状态清空缓存
+        SecurityUtils.getSubject().logout();
     }
 
+    /**
+     * 得到角色的所有权限信息
+     * @param roles
+     * @return
+     */
     @Override
     public Set<Premission> getAllPreByRoles(Set<String> roles) {
         Set<Premission> set = new HashSet<>();

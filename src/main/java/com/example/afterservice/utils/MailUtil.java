@@ -15,6 +15,14 @@ public class MailUtil {
 
     @Value("${email.hostname}")
     public  String hostname;
+
+
+    /**
+     * 向邮箱发送验证码
+     * @param emailaddress
+     * @param code
+     * @return
+     */
     //邮箱验证码
     public  boolean sendEmail(String emailaddress,String code){
         try {

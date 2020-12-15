@@ -38,16 +38,10 @@ public class SoftwareServiceImpl  implements SoftwareService {
     private RoleMapper roleMapper;
 
     @Override
-    public int getCount() {
-        return softwareMapper.selectCount(null);
-    }
-
-    @Override
-    public List<Software> getAll(int pageIndex, int size) {
+    public IPage<Software> getAll(int pageIndex, int size) {
         Page<Software> softwarePage = new Page<>(pageIndex, size);
         IPage<Software> iPage = softwareMapper.selectPage(softwarePage, null);
-        List<Software> records = iPage.getRecords();
-        return records;
+        return iPage;
     }
 
     @Override

@@ -8,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Set;
@@ -19,14 +16,14 @@ import java.util.Set;
 @Api(tags = "用户角色相关接口")
 @RestController
 @CrossOrigin
-@RequestMapping("UserRole")
+@RequestMapping("user-role")
 public class UserRoleController {
 
     @Autowired
     private UserRoleService userRoleService;
 
     @ApiOperation("获取当前用户的角色")
-    @GetMapping("/getUserRole")
+    @GetMapping()
     public RestResponse getUserRole(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         DecodedJWT verify = JWTUtil.verify(token);
@@ -36,12 +33,11 @@ public class UserRoleController {
     }
 
     @ApiOperation("根据用户ID获取用户的角色")
-    @GetMapping("getUserRoleById")
-    public RestResponse getUserRoleById(String id){
+    @GetMapping("{id}")
+    public RestResponse getUserRoleById(@PathVariable String id){
         Set<String> roles = userRoleService.getRoleById(id);
         return new RestResponse(roles);
     }
-
 
 
 }

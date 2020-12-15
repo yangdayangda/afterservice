@@ -107,7 +107,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(User user) {
-
         userMapper.updateById(user);
     }
 
@@ -121,8 +120,10 @@ public class UserServiceImpl implements UserService {
         user.setEmail(email);
         List<User> users = queryUser(user);
         String id = users.get(0).getId();
+        String name = users.get(0).getUsername();
         HashMap<String, String> map = new HashMap<>();
         map.put("id",id);
+        map.put("name",name);
         return JWTUtil.getToken(map);
     }
 
@@ -135,6 +136,29 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAllUser() {
 
         return userMapper.getAllUser();
+    }
+
+    @Override
+    public List<User> getApply() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.ne("audit_status","0");
+        List<User> users = userMapper.selectList(wrapper);
+        return users;
+    }
+
+    @Override
+    public List<User> vagueSelect(String username) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.like("username",username);
+        return userMapper.selectList(wrapper);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        int i = userMapper.deleteById(id);
+        if (i==0){
+            throw new BusinessException(CommonErrorCode.E_100119);
+        }
     }
 
 }

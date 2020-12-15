@@ -1,5 +1,6 @@
 package com.example.afterservice.service;
 
+import com.example.afterservice.dto.EditionDto;
 import com.example.afterservice.entity.Edition;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -17,7 +18,12 @@ public interface EditionService  {
 
     void addEdition(Edition edition);
 
-    List<Edition> getAllByname(String softname);
+    List<EditionDto> getAllByname();
 
-    void downloadTime(String id);
+
+    void deleteEdition(String id);
+
+    EditionDto getOneByTitle(String title);
+
+    List<EditionDto> vagueSelect(String title);
 }

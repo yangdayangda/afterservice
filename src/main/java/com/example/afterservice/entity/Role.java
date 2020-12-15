@@ -18,4 +18,7 @@ public class Role {
 
     @ApiModelProperty("该角色备注")
     private String remark;
+
+    @ApiModelProperty("角色描述")
+    private String comment;
 }

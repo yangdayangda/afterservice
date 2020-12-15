@@ -72,7 +72,7 @@ public class Feedback implements Serializable {
      * 反馈发出时间
      */
     @ApiModelProperty("反馈时间，数据库自动生成")
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime time;
 
     /**

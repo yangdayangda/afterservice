@@ -1,5 +1,6 @@
 package com.example.afterservice.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.example.afterservice.entity.Software;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -15,9 +16,7 @@ import java.util.List;
  */
 public interface SoftwareService {
 
-    int getCount();
-
-    List<Software> getAll(int pageIndex, int size);
+    IPage<Software> getAll(int pageIndex, int size);
 
     void addSoftware(String name);
 

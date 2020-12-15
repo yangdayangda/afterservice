@@ -49,20 +49,13 @@ public class FeedbackServiceImpl  implements FeedbackService {
     }
 
     @Override
-    public List<Feedback> getMyFeedback(String id,int pageIndex, int size) {
+    public IPage<Feedback> getMyFeedback(String id,int pageIndex, int size) {
         Page<Feedback> page = new Page<>(pageIndex,size);
         QueryWrapper<Feedback> wrapper = new QueryWrapper<>();
         wrapper.eq("user_id",id);
         IPage<Feedback> feedbackIPage = feedbackMapper.selectPage(page, wrapper);
 
-        return feedbackIPage.getRecords();
-    }
-
-    @Override
-    public int getCounts(String id) {
-        QueryWrapper<Feedback> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id",id);
-        return feedbackMapper.selectCount(wrapper);
+        return feedbackIPage;
     }
 
     @Override
@@ -74,18 +67,14 @@ public class FeedbackServiceImpl  implements FeedbackService {
     }
 
     @Override
-    public List<Feedback> getAllFeedback(Feedback feedback,int pageIndex,int size) {
+    public IPage<Feedback> getAllFeedback(Feedback feedback,int pageIndex,int size) {
         QueryWrapper<Feedback> wrapper = new QueryWrapper<>(feedback);
         wrapper.orderByDesc("time");
         Page<Feedback> page = new Page<Feedback>(pageIndex, size);
         IPage<Feedback> feedbackIPage = feedbackMapper.selectPage(page, wrapper);
-        return feedbackIPage.getRecords();
+        return feedbackIPage;
     }
 
-    @Override
-    public int getAllCounts(Feedback feedback) {
-        return feedbackMapper.selectCount(new QueryWrapper<Feedback>(feedback));
-    }
 
     @Override
     public List<User> getUserById(String feedBackId) {

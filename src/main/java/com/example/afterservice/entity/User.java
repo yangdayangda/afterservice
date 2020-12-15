@@ -27,7 +27,7 @@ public class User implements Serializable {
     /**
      * 用户姓名
      */
-    @ApiModelProperty("用户ID")
+    @ApiModelProperty("用户名")
     private String username;
 
     /**
@@ -64,7 +64,7 @@ public class User implements Serializable {
      * 注册时间
      */
     @ApiModelProperty("注册时间，数据库创建不用增加")
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private LocalDateTime registerTime;
 
     @ApiModelProperty("申请的角色的ID")

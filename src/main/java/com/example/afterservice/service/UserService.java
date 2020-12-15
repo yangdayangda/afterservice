@@ -1,5 +1,6 @@
 package com.example.afterservice.service;
 
+import com.example.afterservice.entity.Edition;
 import com.example.afterservice.entity.User;
 import com.example.afterservice.entity.UserDto;
 
@@ -25,12 +26,15 @@ public interface UserService {
 
     void updateUser(User user);
 
-
     String loginByPassword(String phone, String password);
 
     User getUserById(String id);
 
-
     List<UserDto> getAllUser();
 
+    List<User> getApply();
+
+    List<User> vagueSelect(String username);
+
+    void deleteById(String id);
 }
